@@ -1,8 +1,10 @@
 ## PYNQ-Helloworld
 
-This repository contains an example application built end-to-end using Xilinx design tools and the Xilinx PYNQ framework. 
+This repository contains a "Hello World" introduction application to the Xilinx PYNQ framework. 
 
-The design illustrates how to run a resizer IP to resize an image on the FPGA. There are two notebooks that illustrate the resize operation. One notebook shows the image resizing done in purely software using Python Image Library. The second notebook shows the resize operation being performed in the programmable logic using a resizer IP from the  Xilinx xfopencv library. 
+The design illustrates how to run a resizer IP to resize an image on the FPGA. There are two notebooks that illustrate the resize operation. One notebook shows the image resizing done purely in software using Python Image Library. The second notebook shows the resize operation being performed in the programmable logic using a resizer IP from the  Xilinx xfopencv library. 
+https://github.com/Xilinx/xfopencv/tree/master/examples/resize   
+
 
 ![](./resizer_notebooks.png)
 
