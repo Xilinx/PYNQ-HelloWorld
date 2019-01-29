@@ -17,7 +17,7 @@ https://github.com/Xilinx/xfopencv/tree/master/examples/resize
 Open a terminal on your PYNQ board and run:
 
 ```
-sudo pip3 install --upgrade git+https://xilinx.com/pynq-helloworld.git
+sudo pip3 install --upgrade git+https://github.com/xilinx/pynq-helloworld.git
 ```
 
 Currently this repository is compatible with [PYNQ image v2.3](http://www.pynq.io/board).
