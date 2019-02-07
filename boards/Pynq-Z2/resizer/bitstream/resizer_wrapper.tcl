@@ -43,11 +43,10 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 
 set list_projs [get_projects -quiet]
 if { $list_projs eq "" } {
-   create_project project_1 myproj -part xc7z020clg400-1
-   set_property BOARD_PART www.digilentinc.com:pynq-z1:part0:1.0 [current_project]
+   create_project resizer resizer -part xc7z020clg400-1
 }
 
-set_property  ip_repo_paths  ip [current_project]
+set_property  ip_repo_paths ../../../ip [current_project]
 update_ip_catalog
 
 # CHANGE DESIGN NAME HERE
