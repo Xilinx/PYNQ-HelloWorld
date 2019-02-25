@@ -7,7 +7,7 @@ all: block_design bitstream check_timing
 	@echo
 
 block_design:
-	vivado -mode batch -source $(overlay_name)_wrapper.tcl -notrace
+	vivado -mode batch -source $(overlay_name).tcl -notrace
 
 bitstream:
 	vivado -mode batch -source build_bitstream.tcl -notrace
