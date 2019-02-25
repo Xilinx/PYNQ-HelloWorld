@@ -20,7 +20,7 @@ set script_folder [_tcl::get_script_folder]
 ################################################################
 # Check if script is running in correct Vivado version.
 ################################################################
-set scripts_vivado_version 2018.2
+set scripts_vivado_version 2018.3
 set current_vivado_version [version -short]
 
 if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
@@ -39,17 +39,15 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 
 # If there is no project opened, this script will create a
 # project, but make sure you do not have an existing project
-# <./myproj/project_1.xpr> in the current working folder.
+# <./resizer/resizer.xpr> in the current working folder.
 
 set list_projs [get_projects -quiet]
 if { $list_projs eq "" } {
-   create_project project_1 myproj -part xc7z020clg400-1
-   set_property BOARD_PART www.digilentinc.com:pynq-z1:part0:1.0 [current_project]
+   create_project resizer resizer -part xc7z020clg400-1
 }
 
-set_property  ip_repo_paths  ip [current_project]
+set_property  ip_repo_paths ../../../ip [current_project]
 update_ip_catalog
-
 
 # CHANGE DESIGN NAME HERE
 variable design_name
