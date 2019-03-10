@@ -20,7 +20,7 @@ Open a terminal on your PYNQ board and run:
 sudo pip3 install --upgrade git+https://github.com/xilinx/pynq-helloworld.git
 ```
 
-Currently this repository is compatible with [PYNQ image v2.3](http://www.pynq.io/board).
+Currently this repository is compatible with [PYNQ image v2.4](http://www.pynq.io/board).
 
 
 
