@@ -30,6 +30,8 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _XF_RESIZE_CONFIG_
 #define _XF_RESIZE_CONFIG_
 
+#include <iostream>
+#include <math.h> 
 #include "hls_stream.h"
 #include "ap_int.h"
 #include "common/xf_common.h"

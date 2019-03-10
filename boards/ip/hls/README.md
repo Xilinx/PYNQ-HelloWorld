@@ -1,21 +1,26 @@
-# HLS function for resize
+## HLS IP
 
-This folder contains the source code for resize function in HLS. This function is a subset of pubicly available xfOpenCV library from Xilinx.
+This folder contains the source code for HLS IP.
+For example, the `resize` IP is built from HLS code; this function uses 
+a subset of publicly available xfOpenCV library from Xilinx.
 
-There are two folders in this directory:
-include - This directory consists of files pertaining to the library infrastructure and source with core functionality
-resize - This folder consists of C-testbench for unit test and a tcl script to run the resize kernel through C-simulation, C-synthesis, C/RTL cosimulation, and exporting the RTL as an IP. 
-
-To test the functionality, please run the following:
+To build all the IP's in this folder, please run:
 
 ```
-$ vivado_hls resize/hls_script.tcl
+./build_ip.sh
 ```
 
+To build a specific IP, please run the following:
 
-The HLS top function is present in xf_resize_accel.cpp. 
+```
+vivado_hls <ip_name>/script.tcl
+```
 
+For example, for the `resize` IP, we can run:
 
+```
+vivado_hls resize/script.tcl
+```
 
 ## Licenses
 
