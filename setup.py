@@ -70,8 +70,8 @@ copy_notebooks()
 
 setup(
     name="pynq-helloworld",
-    version='1.0',
-    install_requires=['pynq>=2.3'],
+    version='1.1',
+    install_requires=['pynq>=2.5'],
     url='https://gitenterprise.xilinx.com/npurusho/pynq-helloworld.git',
     license='BSD 3-Clause License',
     author="Naveen Purushotham",
