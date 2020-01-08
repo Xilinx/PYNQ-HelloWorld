@@ -27,58 +27,135 @@
 #   OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 #   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from setuptools import setup, find_packages
+__author__ = "Yun Rock Qu"
+__copyright__ = "Copyright 2020, Xilinx"
+__email__ = "pynq_support@xilinx.com"
+
+
+from setuptools import setup, find_packages, Distribution
+from setuptools.command.build_ext import build_ext
 from distutils.dir_util import copy_tree
+from distutils.file_util import copy_file
 import os
+import subprocess
+import re
 import shutil
 
+
+# Parse version number
+def find_version(file_path):
+    with open(file_path, 'r') as fp:
+        version_file = fp.read()
+        version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]",
+                                  version_file, re.M)
+    if version_match:
+        return version_match.group(1)
+    raise NameError("Version string must be defined in {}.".format(file_path))
+
+
 # global variables
-board = os.environ['BOARD']
-repo_board_folder = f'boards/{board}/resizer'
-board_notebooks_dir = os.environ['PYNQ_JUPYTER_NOTEBOOKS']
-hw_data_files = []
+data_files = []
+download_links = {
+    'Pynq-Z1': [
+        'https://dl.dropboxusercontent.com/s/m5ay6j4to7ryr4p/resizer.bit',
+        'https://dl.dropboxusercontent.com/s/1qiy3124wjmq803/resizer.hwh'],
+    'Pynq-Z2': [
+        'https://dl.dropboxusercontent.com/s/bwqk0uzdc4o9afd/resizer.bit',
+        'https://dl.dropboxusercontent.com/s/vdcwzhsvstko4yj/resizer.hwh'],
+    'Ultra96': [
+        'https://dl.dropboxusercontent.com/s/l1n2903aj5sac8e/resizer.bit',
+        'https://dl.dropboxusercontent.com/s/2greuk281iu0txb/resizer.hwh'],
+    'ZCU104': [
+        'https://dl.dropboxusercontent.com/s/i9vcgcv2pqlszrr/resizer.bit',
+        'https://dl.dropboxusercontent.com/s/mlx1shzyyn8oqgs/resizer.hwh'],
+}
 
 
 # check whether board is supported
 def check_env():
-    if not os.path.isdir(repo_board_folder):
-        raise ValueError("Board {} is not supported.".format(board))
-    if not os.path.isdir(board_notebooks_dir):
-        raise ValueError("Directory {} does not exist.".format(board_notebooks_dir))
+    global board, notebooks_dir
 
+    if 'BOARD' not in os.environ:
+        raise ValueError(
+            'Set BOARD variable in the environment.')
+    board = os.environ['BOARD']
 
-# copy overlays to python package
-def copy_overlays():
-    src_ol_dir = os.path.join(repo_board_folder, 'bitstream')
-    dst_ol_dir = os.path.join('helloworld', 'bitstream')
-    copy_tree(src_ol_dir, dst_ol_dir)
-    hw_data_files.extend([os.path.join("..", dst_ol_dir, f) for f in os.listdir(dst_ol_dir)])
+    if 'PYNQ_JUPYTER_NOTEBOOKS' not in os.environ:
+        raise ValueError(
+            'Set PYNQ_JUPYTER_NOTEBOOKS variable in the environment.')
+    notebooks_dir = os.environ['PYNQ_JUPYTER_NOTEBOOKS']
 
 
 # copy notebooks to jupyter home
 def copy_notebooks():
-    src_nb_dir = os.path.join(repo_board_folder, 'notebooks')
-    dst_nb_dir = os.path.join(board_notebooks_dir, 'helloworld')
+    src_nb_dir = os.path.join('boards', board, 'resizer', 'notebooks')
+    dst_nb_dir = os.path.join(notebooks_dir, 'pynq-helloworld')
     if os.path.exists(dst_nb_dir):
         shutil.rmtree(dst_nb_dir)
     copy_tree(src_nb_dir, dst_nb_dir)
 
 
-check_env()
-copy_overlays()
-copy_notebooks()
+# Enforce platform-dependent distribution
+class BinaryDistribution(Distribution):
+    def has_ext_modules(self):
+        return True
+
+
+# Build extension
+class BuildExtension(build_ext):
+    def download_files(self):
+        if board not in download_links:
+            raise ValueError(
+                "Board {} is probably not supported.".format(board))
+
+        board_links = download_links[board]
+        dst_ol_dir = os.path.join(self.build_lib, 'pynqhelloworld', 'overlays')
+        if not os.path.isdir(dst_ol_dir):
+            os.makedirs(dst_ol_dir)
+        for i in board_links:
+            _ = subprocess.check_output(['wget', '-q', '-P', dst_ol_dir,
+                                         i, '--no-check-certificate'])
+        data_files.extend(
+            [os.path.join("..", dst_ol_dir, f) for f in os.listdir(dst_ol_dir)])
+
+    def install_overlays(self):
+        src_ol_dir = os.path.join('boards', board, 'resizer')
+        dst_ol_dir = os.path.join(self.build_lib, 'pynqhelloworld', 'overlays')
+        [copy_file(os.path.join(src_ol_dir, f), dst_ol_dir)
+            for f in os.listdir(src_ol_dir) if f.endswith('.py')]
+
+    def run(self):
+        check_env()
+        copy_notebooks()
+        self.download_files()
+        self.install_overlays()
+        build_ext.run(self)
+
+
+pkg_version = find_version('pynqhelloworld/__init__.py')
+with open("README.md", encoding='utf-8') as fh:
+    readme_lines = fh.readlines()[2:6]
+long_description = (''.join(readme_lines))
 
 setup(
-    name="pynq-helloworld",
-    version='1.0',
-    install_requires=['pynq>=2.3'],
-    url='https://gitenterprise.xilinx.com/npurusho/pynq-helloworld.git',
+    name="pynqhelloworld",
+    version=pkg_version,
+    description="PYNQ example design supporting PYNQ-enabled boards",
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+    author='Xilinx PYNQ Development Team',
+    author_email="pynq_support@xilinx.com",
+    install_requires=['pynq>=2.5'],
+    url='https://github.com/Xilinx/PYNQ-HelloWorld.git',
     license='BSD 3-Clause License',
-    author="Naveen Purushotham",
-    author_email="npurusho@xilinx.com",
     packages=find_packages(),
-    package_data={
-        '': hw_data_files,
+    cmdclass={
+        "build_ext": BuildExtension,
     },
-    description="PYNQ example designs supporting PYNQ-enabled boards"
+    distclass=BinaryDistribution,
+    python_requires='>=3.6.0',
+    package_data={
+        'pynqhelloworld': data_files,
+    },
+
 )

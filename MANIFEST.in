@@ -1,0 +1,9 @@
+# include top-level files
+include *.md
+include LICENSE
+
+# include all the boards; exclude hardware related files
+recursive-include boards *
+prune boards/ip
+recursive-exclude boards/*/* makefile
+recursive-exclude boards/*/* *.tcl
