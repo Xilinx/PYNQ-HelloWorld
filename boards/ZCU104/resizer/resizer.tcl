@@ -20,7 +20,7 @@ set script_folder [_tcl::get_script_folder]
 ################################################################
 # Check if script is running in correct Vivado version.
 ################################################################
-set scripts_vivado_version 2019.1
+set scripts_vivado_version 2019.2
 set current_vivado_version [version -short]
 
 if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
@@ -47,7 +47,7 @@ if { $list_projs eq "" } {
    set_property BOARD_PART xilinx.com:zcu104:part0:1.1 [current_project]
 }
 
-set_property  ip_repo_paths  ../../../ip [current_project]
+set_property  ip_repo_paths  ../../ip [current_project]
 update_ip_catalog
 
 # CHANGE DESIGN NAME HERE
@@ -204,7 +204,7 @@ proc create_root_design { parentCell } {
    CONFIG.c_mm2s_burst_size {256} \
    CONFIG.c_s2mm_burst_size {256} \
    CONFIG.c_sg_include_stscntrl_strm {0} \
-   CONFIG.c_sg_length_width {23} \
+   CONFIG.c_sg_length_width {26} \
  ] $axi_dma_0
 
   # Create instance: axi_interconnect_0, and set properties
