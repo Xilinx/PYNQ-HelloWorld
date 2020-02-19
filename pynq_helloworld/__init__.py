@@ -30,4 +30,4 @@
 __author__ = "Yun Rock Qu"
 __copyright__ = "Copyright 2020, Xilinx"
 __email__ = "pynq_support@xilinx.com"
-__version__ = '2.5.0a7'
+__version__ = '2.5.1'

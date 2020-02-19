@@ -14,10 +14,10 @@ https://github.com/Xilinx/xfopencv/tree/master/examples/resize
 Open a terminal on your PYNQ board and run:
 
 ```
-sudo pip3 install pynqhelloworld
+sudo pip3 install pynq-helloworld
 ```
 
-Currently this repository is compatible with [PYNQ image v2.5](http://www.pynq.io/board).
+Currently this repository is compatible with `pynq` package v2.5.1.
 
 
 ## License

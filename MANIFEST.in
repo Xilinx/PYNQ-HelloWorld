@@ -1,8 +1,4 @@
-# include top-level files
 include pyproject.toml
 include *.md
 include LICENSE
-
-# include package
-recursive-include pynqhelloworld
-
+recursive-include pynq_helloworld *

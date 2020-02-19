@@ -1,0 +1,18 @@
+{
+    "Pynq-Z1": {
+        "url": "https://www.xilinx.com/bin/public/openDownload?filename=pynqhelloworld.resizer.pynqz1.bit",
+        "md5sum": "6cdc717b1989dd61fb8f242548f94e2a"
+    },
+	"Pynq-Z2": {
+        "url": "https://www.xilinx.com/bin/public/openDownload?filename=pynqhelloworld.resizer.pynqz2.bit",
+        "md5sum": "899972d8a50d90bd1dc57b7463aec2c3"
+    },
+	"Ultra96": {
+        "url": "https://www.xilinx.com/bin/public/openDownload?filename=pynqhelloworld.resizer.ultra96.bit",
+        "md5sum": "6e9505b2fd8bb62f846affda27ea9cdb"
+    },
+	"ZCU104": {
+        "url": "https://www.xilinx.com/bin/public/openDownload?filename=pynqhelloworld.resizer.zcu104.bit",
+        "md5sum": "530a0bc2bcf0beed041a3a01eaa7b1f0"
+    }
+}
