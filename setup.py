@@ -27,58 +27,96 @@
 #   OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 #   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+__author__ = "Yun Rock Qu"
+__copyright__ = "Copyright 2020, Xilinx"
+__email__ = "pynq_support@xilinx.com"
+
+
 from setuptools import setup, find_packages
-from distutils.dir_util import copy_tree
 import os
-import shutil
+import platform
+import re
+from pynq.utils import build_py
+
 
 # global variables
-board = os.environ['BOARD']
-repo_board_folder = f'boards/{board}/resizer'
-board_notebooks_dir = os.environ['PYNQ_JUPYTER_NOTEBOOKS']
-hw_data_files = []
+module_name = "pynq_helloworld"
+data_files = []
+current_platform = ""
 
 
-# check whether board is supported
-def check_env():
-    if not os.path.isdir(repo_board_folder):
-        raise ValueError("Board {} is not supported.".format(board))
-    if not os.path.isdir(board_notebooks_dir):
-        raise ValueError("Directory {} does not exist.".format(board_notebooks_dir))
+# parse version number
+def find_version(file_path):
+    with open(file_path, 'r') as fp:
+        version_file = fp.read()
+        version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]",
+                                  version_file, re.M)
+    if version_match:
+        return version_match.group(1)
+    raise NameError("Version string must be defined in {}.".format(file_path))
 
 
-# copy overlays to python package
-def copy_overlays():
-    src_ol_dir = os.path.join(repo_board_folder, 'bitstream')
-    dst_ol_dir = os.path.join('helloworld', 'bitstream')
-    copy_tree(src_ol_dir, dst_ol_dir)
-    hw_data_files.extend([os.path.join("..", dst_ol_dir, f) for f in os.listdir(dst_ol_dir)])
+# extend package
+def extend_package(path):
+    if os.path.isdir(path):
+        data_files.extend(
+            [os.path.join("..", root, f)
+             for root, _, files in os.walk(path) for f in files]
+        )
+    elif os.path.isfile(path):
+        data_files.append(os.path.join("..", path))
 
 
-# copy notebooks to jupyter home
-def copy_notebooks():
-    src_nb_dir = os.path.join(repo_board_folder, 'notebooks')
-    dst_nb_dir = os.path.join(board_notebooks_dir, 'helloworld')
-    if os.path.exists(dst_nb_dir):
-        shutil.rmtree(dst_nb_dir)
-    copy_tree(src_nb_dir, dst_nb_dir)
+# get current platform: either edge or pcie
+def get_platform():
+    cpu = platform.processor()
+    if cpu in ['armv7l', 'aarch64']:
+        return "edge"
+    elif cpu in ['x86_64']:
+        return "pcie"
+    else:
+        raise OSError("Platform is not supported.")
 
 
-check_env()
-copy_overlays()
-copy_notebooks()
+pkg_version = find_version('{}/__init__.py'.format(module_name))
+with open("README.md", encoding='utf-8') as fh:
+    readme_lines = fh.readlines()[2:6]
+long_description = (''.join(readme_lines))
+extend_package(os.path.join(module_name, "notebooks"))
+
 
 setup(
-    name="pynq-helloworld",
-    version='1.0',
-    install_requires=['pynq>=2.3'],
-    url='https://gitenterprise.xilinx.com/npurusho/pynq-helloworld.git',
+    name=module_name,
+    version=pkg_version,
+    description="PYNQ example design supporting edge and PCIE boards",
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+    author='Xilinx PYNQ Development Team',
+    author_email="pynq_support@xilinx.com",
+    url='https://github.com/Xilinx/PYNQ-HelloWorld.git',
     license='BSD 3-Clause License',
-    author="Naveen Purushotham",
-    author_email="npurusho@xilinx.com",
     packages=find_packages(),
     package_data={
-        '': hw_data_files,
+        "": data_files,
     },
-    description="PYNQ example designs supporting PYNQ-enabled boards"
+    python_requires=">=3.6.0",
+    install_requires=[
+        "pynq"
+    ],
+    extras_require={
+        ':python_version<"3.6"': [
+            'matplotlib<3.1',
+            'ipython==7.9'
+        ],
+        ':python_version>="3.6"': [
+            'matplotlib'
+        ]
+    },
+    entry_points={
+        "pynq.notebooks": [
+            "pynq-helloworld = {}.notebooks.{}".format(
+                module_name, get_platform())
+        ]
+    },
+    cmdclass={"build_py": build_py}
 )

@@ -27,7 +27,13 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ***************************************************************************/
-#include "xf_headers.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include "opencv2/opencv.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "xf_axis_config.h"
 #include "xf_resize_config.h"
 
 int main(int argc,char **argv){
@@ -59,8 +65,8 @@ int main(int argc,char **argv){
 	error.create(cv::Size(newwidth, newheight), img.type());
 
 
-	xf::Mat<TYPE, HEIGHT, WIDTH, NPC1> imgInput(height, width);
-	xf::Mat<TYPE, HEIGHT, WIDTH, NPC1> imgOutput(newheight, newwidth);
+	xf::cv::Mat<TYPE, HEIGHT, WIDTH, NPC_T> imgInput(height, width);
+	xf::cv::Mat<TYPE, HEIGHT, WIDTH, NPC_T> imgOutput(newheight, newwidth);
 	imgInput.copyTo(img.data);
 	
 	axis_t *input = new axis_t [height*width];

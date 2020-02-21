@@ -1,0 +1,14 @@
+{
+    "xilinx_u200_xdma_201830_2": {
+        "url": "https://www.xilinx.com/bin/public/openDownload?filename=pynqhelloworld.resizer.xilinx_u200_xdma_201830_2.xclbin",
+        "md5sum": "c836b23bb63b8e430ff1db6b69d8bf06"
+    },
+	"xilinx_u250_xdma_201830_2": {
+        "url": "https://www.xilinx.com/bin/public/openDownload?filename=pynqhelloworld.resizer.xilinx_u250_xdma_201830_2.xclbin",
+        "md5sum": "ff0b8e072dba8457fbe89d2f932326c9"
+    },
+	"xilinx_u280_xdma_201920_1": {
+        "url": "https://www.xilinx.com/bin/public/openDownload?filename=pynqhelloworld.resizer.xilinx_u280_xdma_201920_1.xclbin",
+        "md5sum": "57876ea223c0e65c1e581b0206bf67c5"
+    }
+}

@@ -27,9 +27,12 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ***************************************************************************/
+#include "xf_axis_config.h"
 #include "xf_resize_config.h"
 
-void axis2xfMat (xf::Mat<TYPE, HEIGHT, WIDTH, NPC1> &_src, axis_t *src, int src_rows, int src_cols) {
+void axis2xfMat (axis_t *src, 
+		 xf::cv::Mat<TYPE, HEIGHT, WIDTH, NPC_T> &_src, 
+		 int src_rows, int src_cols) {
 #pragma HLS inline off
 
 	for (int i=0; i<src_rows; i++) {
@@ -42,7 +45,9 @@ void axis2xfMat (xf::Mat<TYPE, HEIGHT, WIDTH, NPC1> &_src, axis_t *src, int src_
 
 }
 
-void xfMat2axis (xf::Mat<TYPE, HEIGHT, WIDTH, NPC1> &_dst, axis_t *dst, int dst_rows, int dst_cols) {
+void xfMat2axis (xf::cv::Mat<TYPE, NEWHEIGHT, NEWWIDTH, NPC_T> &_dst,
+		 axis_t *dst,
+		 int dst_rows, int dst_cols) {
 #pragma HLS inline off
 
 	for (int i=0; i<dst_rows; i++) {
@@ -59,28 +64,30 @@ void xfMat2axis (xf::Mat<TYPE, HEIGHT, WIDTH, NPC1> &_dst, axis_t *dst, int dst_
 	}
 }
 
+extern "C" {
 void resize_accel (axis_t *src, axis_t *dst, int src_rows, int src_cols, int dst_rows, int dst_cols) {
 	
-#pragma HLS INTERFACE axis port=src depth=384*288 // Added depth for C/RTL cosimulation
-#pragma HLS INTERFACE axis port=dst depth=192*144 // Added depth for C/RTL cosimulation
+#pragma HLS INTERFACE axis port=src //depth=384*288 // Added depth for C/RTL cosimulation
+#pragma HLS INTERFACE axis port=dst //depth=192*144 // Added depth for C/RTL cosimulation
 #pragma HLS INTERFACE s_axilite port=src_rows
 #pragma HLS INTERFACE s_axilite port=src_cols
 #pragma HLS INTERFACE s_axilite port=dst_rows
 #pragma HLS INTERFACE s_axilite port=dst_cols
 #pragma HLS INTERFACE s_axilite port=return
 
-	xf::Mat<TYPE, HEIGHT, WIDTH, NPC1> _src(src_rows, src_cols);
-	xf::Mat<TYPE, HEIGHT, WIDTH, NPC1> _dst(dst_rows, dst_cols);
-#pragma HLS stream variable=_src.data depth=150
-#pragma HLS stream variable=_dst.data depth=150
+	xf::cv::Mat<TYPE, HEIGHT, WIDTH, NPC_T> src_mat(src_rows, src_cols);
+	xf::cv::Mat<TYPE, NEWHEIGHT, NEWWIDTH, NPC_T> dst_mat(dst_rows, dst_cols);
+#pragma HLS stream variable=src_mat.data depth=150
+#pragma HLS stream variable=dst_mat.data depth=150
 
 #pragma HLS dataflow
 	
-	axis2xfMat(_src, src, src_rows, src_cols);	
+	axis2xfMat(src, src_mat, src_rows, src_cols);	
 
-	xf::resize <INTERPOLATION, TYPE, HEIGHT, WIDTH, HEIGHT, WIDTH, NPC1, 2> (_src, _dst);
+	xf::cv::resize<INTERPOLATION, TYPE, HEIGHT, WIDTH, NEWHEIGHT, NEWWIDTH, NPC_T, MAXDOWNSCALE>(src_mat, dst_mat);
 
-	xfMat2axis(_dst, dst, dst_rows, dst_cols);	
+	xfMat2axis(dst_mat, dst, dst_rows, dst_cols);	
 
+}
 }
 

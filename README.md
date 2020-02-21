@@ -9,19 +9,15 @@ https://github.com/Xilinx/xfopencv/tree/master/examples/resize
 ![](./resizer_notebooks.png)
 
 
-
-
-
 ## Quick Start
 
 Open a terminal on your PYNQ board and run:
 
 ```
-sudo pip3 install --upgrade git+https://github.com/xilinx/pynq-helloworld.git
+sudo pip3 install pynq-helloworld
 ```
 
-Currently this repository is compatible with [PYNQ image v2.4](http://www.pynq.io/board).
-
+Currently this repository is compatible with `pynq` package v2.5.1.
 
 
 ## License
