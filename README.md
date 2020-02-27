@@ -19,6 +19,16 @@ sudo pip3 install pynq-helloworld
 
 Currently this repository is compatible with `pynq` package v2.5.1.
 
+Go to your jupyter home folder (on edge boards, this is 
+`/home/xilinx/jupyter_notebooks`), and run the following to deliver the notebooks:
+
+```
+pynq get-notebooks pynq-helloworld -p .
+```
+
+The `-p` option specifies the target folder location. Then you should be 
+able to try the notebooks!
+
 
 ## License
 
