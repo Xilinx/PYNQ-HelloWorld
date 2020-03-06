@@ -29,6 +29,18 @@ pynq get-notebooks pynq-helloworld -p .
 The `-p` option specifies the target folder location. Then you should be 
 able to try the notebooks!
 
+## Supporting Boards
+
+Currently this repository is supporting:
+
+* **Zynq-7000 boards**: Pynq-Z1, Pynq-Z2, etc.
+* **Zynq Ultrascale boards**: Ultra96, ZCU104, etc.
+* **PCIE Alveo cards**: U200, U250, U280.
+* **AWS F1 instance**: VU9P.
+
+For AWS, a few additional steps are required to generate the `*.awsxclbin`
+file. For more information, you can check the `README.md` inside 
+`boards/VU9P/resizer`.
 
 ## License
 
