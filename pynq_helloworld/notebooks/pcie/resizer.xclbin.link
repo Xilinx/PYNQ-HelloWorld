@@ -11,7 +11,7 @@
         "url": "https://www.xilinx.com/bin/public/openDownload?filename=pynqhelloworld.resizer.xilinx_u280_xdma_201920_1.xclbin",
         "md5sum": "57876ea223c0e65c1e581b0206bf67c5"
     },
-	"xilinx_aws-vu9p-f1_shell-v04261818_201920_1": {
+	"xilinx_aws-vu9p-f1_dynamic_5_0": {
         "url": "https://www.xilinx.com/bin/public/openDownload?filename=pynqhelloworld.resizer.xilinx_aws-vu9p-f1_shell-v04261818_201920_1.awsxclbin",
         "md5sum": "4fbbb9ff5b6620bfbac66b0755c4107d"
     }
