@@ -1,10 +1,13 @@
 overlay_name := resizer
 design_name := resizer
 
-all: block_design bitstream check_timing
+all: hls block_design bitstream check_timing
 	@echo
 	@tput setaf 2 ; echo "Built $(overlay_name) successfully!"; tput sgr0;
 	@echo
+
+hls: ../../ip/resize_1.0/component.xml
+	cd ../../ip && make
 
 block_design:
 	vivado -mode batch -source $(overlay_name).tcl -notrace

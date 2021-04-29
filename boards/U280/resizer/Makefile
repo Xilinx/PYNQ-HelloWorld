@@ -13,7 +13,7 @@ TARGET := hw
 SDX_PLATFORM = /proj/xbuilds_released_2019/2019.2/GA/2019.2_1107_0355/internal_platforms/xilinx_u280_xdma_201920_1/xilinx_u280_xdma_201920_1.xpfm
 XOCC_OPTS = -t ${TARGET} --platform ${SDX_PLATFORM} \
 	--save-temps --config ${CUR_DIR}/prj_config
-XO_BUILD_PATH = ../../ip/hls/vitis_lib/vision/L2/tests/resize/resize_DOWN_BILINEAR_NO_RGB
+XO_BUILD_PATH = ../../ip/vitis_lib/vision/L2/tests/resize/resize_DOWN_BILINEAR_NO_RGB
 KERN_NAME = resize_accel
 
 .PHONY: all clean
