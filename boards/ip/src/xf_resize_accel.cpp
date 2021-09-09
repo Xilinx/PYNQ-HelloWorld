@@ -1,5 +1,5 @@
 /***************************************************************************
-Copyright (c) 2016, Xilinx, Inc.
+Copyright (c) 2021, Xilinx, Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, 
@@ -27,23 +27,25 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ***************************************************************************/
-#ifndef _XF_AXIS_CONFIG_
-#define _XF_AXIS_CONFIG_
+#include "xf_resize_config.h"
 
-#include <iostream>
-#include <math.h> 
-#include "hls_stream.h"
-#include "ap_int.h"
-#include "common/xf_common.hpp"
-#include "imgproc/xf_resize.hpp"
-#include "xf_config_params.h"
-
-struct axis_t {
-    ap_uint<24> data;
-    ap_int<1> last;
-};
-
-void resize_accel (axis_t *src, axis_t *dst, int src_rows, int src_cols, int dst_rows, int dst_cols);
-
-
-#endif
+extern "C" {
+void resizer(ap_uint<INPUT_PTR_WIDTH>* src, ap_uint<OUTPUT_PTR_WIDTH>* dst,
+             int src_rows, int src_cols, int dst_rows, int dst_cols) {
+    #pragma HLS INTERFACE m_axi     port=src  offset=slave bundle=gmem1
+    #pragma HLS INTERFACE m_axi     port=dst  offset=slave bundle=gmem2
+    #pragma HLS INTERFACE s_axilite port=src_rows              
+    #pragma HLS INTERFACE s_axilite port=src_cols              
+    #pragma HLS INTERFACE s_axilite port=dst_rows              
+    #pragma HLS INTERFACE s_axilite port=dst_cols              
+    #pragma HLS INTERFACE s_axilite port=return
+    xf::cv::Mat<TYPE, HEIGHT, WIDTH, NPC_T> src_mat(src_rows, src_cols);
+    #pragma HLS stream variable=src_mat.data depth=2
+    xf::cv::Mat<TYPE, NEWHEIGHT, NEWWIDTH, NPC_T> dst_mat(dst_rows, dst_cols);
+    #pragma HLS stream variable=dst_mat.data depth=2
+    #pragma HLS DATAFLOW
+    xf::cv::Array2xfMat<INPUT_PTR_WIDTH, TYPE, HEIGHT, WIDTH, NPC_T>(src, src_mat);
+    xf::cv::resize<INTERPOLATION, TYPE, HEIGHT, WIDTH, NEWHEIGHT, NEWWIDTH, NPC_T, MAXDOWNSCALE>(src_mat, dst_mat);
+    xf::cv::xfMat2Array<OUTPUT_PTR_WIDTH, TYPE, NEWHEIGHT, NEWWIDTH, NPC_T>(dst_mat, dst);
+}
+}
