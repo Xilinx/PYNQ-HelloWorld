@@ -1,14 +1,19 @@
-############################################################
-## Copyright (C) 1986-2017 Xilinx, Inc. All Rights Reserved.
-############################################################
+# Copyright (C) 2021 Xilinx, Inc
+
+# SPDX-License-Identifier: BSD-3-Clause
+
+set vitis_lib_include [lindex $argv 2]
+
 open_project resize
 set_top resize_accel
-add_files src/xf_resize_accel.cpp -cflags "-I./vitis_lib/vision/L1/include -I./vitis_lib/vision/L2/examples/resize -I./vitis_lib/vision/L2/tests/resize/resize_DOWN_BILINEAR_NO_RGB -D__SDSVHLS__"
-open_solution "resizer"
+add_files src/xf_resize_accel_stream.cpp -cflags "-I${vitis_lib_include} -D__XF__AXI_SDATA__"
+open_solution "resize" -flow_target vivado
 set_part {zynq}
 create_clock -period 10 -name default
 set_clock_uncertainty 27.0%
+
+#Synthesize and export IP using Vivado flow
+config_export -format ip_catalog -rtl verilog
 csynth_design
 export_design -format ip_catalog -description "Image resizing IP" -display_name "resize_accel"
 exit
-
