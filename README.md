@@ -34,7 +34,7 @@ able to try the notebooks!
 Currently this repository is supporting:
 
 * **Zynq-7000 boards**: Pynq-Z1, Pynq-Z2, etc.
-* **Zynq Ultrascale boards**: Ultra96, ZCU104, etc.
+* **Zynq Ultrascale boards**: Pynq-ZU, Ultra96, ZCU104, etc.
 * **PCIE Alveo cards**: U200, U250, U280.
 * **AWS F1 instance**: VU9P.
 
