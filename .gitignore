@@ -14,9 +14,10 @@
 Thumbs.db
 thumbs.db
 
-# Logs and Databases
+# Logs, Databases and Journals
 ######################
 *.log
+*.jou
 
 # VIM Swap Files
 ######################
@@ -40,3 +41,9 @@ __pycache__/
 ######################
 GNUmakefile
 user.props
+
+# Overlay files
+######################
+*.bit
+*.hwh
+*.xclbin
