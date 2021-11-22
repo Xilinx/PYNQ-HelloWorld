@@ -25,3 +25,6 @@ check_timing:
 
 clean:
 	rm -rf $(overlay_name) *.jou *.log NA .Xil
+
+distclean: clean
+	rm -rf  $(overlay_name).bit $(overlay_name).hwh
