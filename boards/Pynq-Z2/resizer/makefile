@@ -1,13 +1,18 @@
-overlay_name := resizer
-design_name := resizer
+# Copyright (C) 2021 Xilinx, Inc
+#
+# SPDX-License-Identifier: BSD-3-Clause
 
-all: hls block_design bitstream check_timing
+overlay_name := resizer
+
+hls = ../../ip/resize/resize/impl/ip/component.xml
+
+all: $(hls) block_design bitstream check_timing
 	@echo
 	@tput setaf 2 ; echo "Built $(overlay_name) successfully!"; tput sgr0;
 	@echo
 
-hls: ../../ip/resize_1.0/component.xml
-	cd ../../ip && make
+$(hls):
+	make -C ../../ip
 
 block_design:
 	vivado -mode batch -source $(overlay_name).tcl -notrace
@@ -19,4 +24,7 @@ check_timing:
 	vivado -mode batch -source check_$(overlay_name).tcl -notrace
 
 clean:
-	rm -rf $(overlay_name) *.jou *.log NA
+	rm -rf $(overlay_name) *.jou *.log NA .Xil
+
+distclean: clean
+	rm -rf  $(overlay_name).bit $(overlay_name).hwh
