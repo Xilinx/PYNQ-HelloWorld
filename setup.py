@@ -80,7 +80,7 @@ def get_platform():
 
 pkg_version = find_version('{}/__init__.py'.format(module_name))
 with open("README.md", encoding='utf-8') as fh:
-    readme_lines = fh.readlines()[2:6]
+    readme_lines = fh.readlines()[2:47]
 long_description = (''.join(readme_lines))
 extend_package(os.path.join(module_name, "notebooks"))
 
@@ -101,17 +101,10 @@ setup(
     },
     python_requires=">=3.6.0",
     install_requires=[
-        "pynq"
+        "pynq",
+        "matplotlib",
+        "ipython"
     ],
-    extras_require={
-        ':python_version<"3.6"': [
-            'matplotlib<3.1',
-            'ipython==7.9'
-        ],
-        ':python_version>="3.6"': [
-            'matplotlib'
-        ]
-    },
     entry_points={
         "pynq.notebooks": [
             "pynq-helloworld = {}.notebooks.{}".format(
