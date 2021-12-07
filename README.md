@@ -14,10 +14,10 @@ https://github.com/Xilinx/xfopencv/tree/master/examples/resize
 Open a terminal on your PYNQ board and run:
 
 ```
-sudo pip3 install pynq-helloworld
+sudo pip3 install pynq-helloworld --no-build-isolation
 ```
 
-Currently this repository is compatible with `pynq` package v2.5.1.
+Currently this repository is compatible with `pynq` package v2.7.0.
 
 Go to your jupyter home folder (on edge boards, this is 
 `/home/xilinx/jupyter_notebooks`), and run the following to deliver the notebooks:
@@ -29,12 +29,12 @@ pynq get-notebooks pynq-helloworld -p .
 The `-p` option specifies the target folder location. Then you should be 
 able to try the notebooks!
 
-## Supporting Boards
+## Supported Boards
 
 Currently this repository is supporting:
 
 * **Zynq-7000 boards**: Pynq-Z1, Pynq-Z2, etc.
-* **Zynq Ultrascale boards**: Pynq-ZU, Ultra96, ZCU104, etc.
+* **Zynq Ultrascale boards**: KV260, Pynq-ZU, Ultra96, ZCU104, etc.
 * **PCIE Alveo cards**: U200, U250, U280.
 * **AWS F1 instance**: VU9P.
 
