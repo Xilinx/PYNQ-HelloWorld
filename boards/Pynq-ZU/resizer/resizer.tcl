@@ -41,10 +41,21 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 # project, but make sure you do not have an existing project
 # <./resizer/resizer.xpr> in the current working folder.
 
+# Add user local board path and check if the board file exists
+set_param board.repoPaths [get_property LOCAL_ROOT_DIR [xhub::get_xstores xilinx_board_store]]
+
+set board [get_board_parts "*:pynqzu:*" -latest_file_version]
+if { ${board} eq "" } {
+   puts ""
+   catch {common::send_gid_msg -ssname BD::TCL -id 2041 -severity "ERROR" "${board} board file is not found. Please install the board file either manually or using the Xilinx Board Store"}
+   return 1
+}
+
+set prj_name "resizer"
 set list_projs [get_projects -quiet]
 if { $list_projs eq "" } {
-   create_project resizer resizer -part xczu7ev-ffvc1156-2-e
-   set_property BOARD_PART xilinx.com:zcu104:part0:1.1 [current_project]
+   create_project ${prj_name} ${prj_name} -part xczu5eg-sfvc784-1-e
+   set_property BOARD_PART ${board} [current_project]
 }
 
 set_property  ip_repo_paths  ../../ip [current_project]

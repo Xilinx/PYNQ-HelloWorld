@@ -13,7 +13,7 @@ TARGET := hw
 SDX_PLATFORM = /group/xrlabs/yunq/public/vitis_platform_2019.2/VU9P/xilinx_aws-vu9p-f1_shell-v04261818_201920_1/xilinx_aws-vu9p-f1_shell-v04261818_201920_1.xpfm
 XOCC_OPTS = -t ${TARGET} --platform ${SDX_PLATFORM} \
 	--save-temps --config ${CUR_DIR}/prj_config
-XO_BUILD_PATH = ../../ip/hls/vitis_lib/vision/L2/tests/resize/resize_DOWN_BILINEAR_NO_RGB
+XO_BUILD_PATH = ../../ip/vitis_lib/vision/L2/tests/resize/resize_DOWN_BILINEAR_NO_RGB
 KERN_NAME = resize_accel
 
 .PHONY: all clean
