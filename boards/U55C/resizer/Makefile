@@ -10,7 +10,7 @@ TARGET := hw
 # update VITIS_PLATFORM based on your system
 VITIS_PLATFORM = /proj/xbuilds/2022.1_released/internal_platforms/$(PLATFORM)/$(PLATFORM).xpfm
 VPP_OPTS = -t ${TARGET} --platform ${VITIS_PLATFORM} \
-	--save-temps --config ${CUR_DIR}/prj_config
+	--save-temps --config ${CUR_DIR}/config.cfg
 XO_BUILD_PATH = ../../ip/vitis_lib/vision/L2/tests/resize/resize_DOWN_BILINEAR_NO_RGB
 KERN_NAME = resize_accel
 
@@ -22,7 +22,7 @@ kernel_xo = binary_container_1/resize_accel.xo
 binary_container_1/resize_accel.xo:
 	@mkdir -p $(@D)
 	-@$(RM) $@
-	cd $(XO_BUILD_PATH) && make xo TARGET=$(TARGET) DEVICE=$(VITIS_PLATFORM)
+	cd $(XO_BUILD_PATH) && make _x_temp.hw.$(PLATFORM)/resize_accel.xo TARGET=$(TARGET) DEVICE=$(VITIS_PLATFORM)
 	cp -rf $(XO_BUILD_PATH)/*/resize_accel.xo $@
 
 binary_container_1/resizer.xclbin: $(kernel_xo)
