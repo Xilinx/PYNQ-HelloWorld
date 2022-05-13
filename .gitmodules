@@ -1,3 +1,0 @@
-[submodule "boards/ip/vitis_lib"]
-	path = boards/ip/vitis_lib
-	url = https://github.com/Xilinx/Vitis_Libraries.git
