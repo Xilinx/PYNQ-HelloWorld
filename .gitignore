@@ -27,6 +27,7 @@ thumbs.db
 ######################
 build/
 sdcard/
+binary_container_1/
 
 # Test failure outputs
 ######################
@@ -46,4 +47,5 @@ user.props
 ######################
 *.bit
 *.hwh
+*.xo
 *.xclbin
