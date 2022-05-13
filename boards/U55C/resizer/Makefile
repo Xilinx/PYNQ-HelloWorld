@@ -1,16 +1,14 @@
-BOARD := U55C
+include platform.mk
 
 CUR_DIR = $(shell pwd)
-VIVADO_ROOT := $(XILINX_VIVADO)
 
 RM = rm -f
 RMDIR = rm -rf
 
-VIVADO := ${VIVADO_ROOT}/bin/vivado
 TARGET := hw
 
 # update VITIS_PLATFORM based on your system
-VITIS_PLATFORM = /proj/xbuilds/2022.1_released/internal_platforms/xilinx_u55c_gen3x16_xdma_3_202210_1/xilinx_u55c_gen3x16_xdma_3_202210_1.xpfm
+VITIS_PLATFORM = /proj/xbuilds/2022.1_released/internal_platforms/$(PLATFORM)/$(PLATFORM).xpfm
 VPP_OPTS = -t ${TARGET} --platform ${VITIS_PLATFORM} \
 	--save-temps --config ${CUR_DIR}/prj_config
 XO_BUILD_PATH = ../../ip/vitis_lib/vision/L2/tests/resize/resize_DOWN_BILINEAR_NO_RGB
