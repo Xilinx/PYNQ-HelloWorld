@@ -1,4 +1,4 @@
-BOARD := U200
+BOARD := U55C
 
 CUR_DIR = $(shell pwd)
 VIVADO_ROOT := $(XILINX_VIVADO)
@@ -10,7 +10,7 @@ VIVADO := ${VIVADO_ROOT}/bin/vivado
 TARGET := hw
 
 # update VITIS_PLATFORM based on your system
-VITIS_PLATFORM = /proj/xbuilds/2022.1_released/internal_platforms/xilinx_u200_gen3x16_xdma_2_202110_1/xilinx_u200_gen3x16_xdma_2_202110_1.xpfm
+VITIS_PLATFORM = /proj/xbuilds/2022.1_released/internal_platforms/xilinx_u50_gen3x16_xdma_5_202210_1/xilinx_u50_gen3x16_xdma_5_202210_1.xpfm
 VPP_OPTS = -t ${TARGET} --platform ${VITIS_PLATFORM} \
 	--save-temps --config ${CUR_DIR}/prj_config
 XO_BUILD_PATH = ../../ip/vitis_lib/vision/L2/tests/resize/resize_DOWN_BILINEAR_NO_RGB

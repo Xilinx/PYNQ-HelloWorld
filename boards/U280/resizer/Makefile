@@ -9,9 +9,9 @@ RMDIR = rm -rf
 VIVADO := ${VIVADO_ROOT}/bin/vivado
 TARGET := hw
 
-# update SDX_PLATFORM based on your system
-SDX_PLATFORM = /proj/xbuilds_released_2019/2019.2/GA/2019.2_1107_0355/internal_platforms/xilinx_u280_xdma_201920_1/xilinx_u280_xdma_201920_1.xpfm
-XOCC_OPTS = -t ${TARGET} --platform ${SDX_PLATFORM} \
+# update VITIS_PLATFORM based on your system
+VITIS_PLATFORM = /proj/xbuilds/2022.1_released/internal_platforms/xilinx_u280_gen3x16_xdma_1_202120_1/xilinx_u280_gen3x16_xdma_1_202120_1.xpfm
+VPP_OPTS = -t ${TARGET} --platform ${VITIS_PLATFORM} \
 	--save-temps --config ${CUR_DIR}/prj_config
 XO_BUILD_PATH = ../../ip/vitis_lib/vision/L2/tests/resize/resize_DOWN_BILINEAR_NO_RGB
 KERN_NAME = resize_accel
@@ -24,11 +24,11 @@ kernel_xo = binary_container_1/resize_accel.xo
 binary_container_1/resize_accel.xo:
 	@mkdir -p $(@D)
 	-@$(RM) $@
-	cd $(XO_BUILD_PATH) && make xo TARGET=$(TARGET) DEVICE=$(SDX_PLATFORM)
+	cd $(XO_BUILD_PATH) && make xo TARGET=$(TARGET) DEVICE=$(VITIS_PLATFORM)
 	cp -rf $(XO_BUILD_PATH)/*/resize_accel.xo $@
 
 binary_container_1/resizer.xclbin: $(kernel_xo)
-	v++ $(XOCC_OPTS) -l --temp_dir binary_container_1 --log_dir binary_container_1/logs --remote_ip_cache binary_container_1/ip_cache -o "$@" $(+)
+	v++ $(VPP_OPTS) -l --temp_dir binary_container_1 --log_dir binary_container_1/logs --remote_ip_cache binary_container_1/ip_cache -o "$@" $(+)
 	cp -f $@ resizer.xclbin
 
 clean:
