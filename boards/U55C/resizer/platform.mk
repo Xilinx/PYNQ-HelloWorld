@@ -1,1 +1,1 @@
-PLATFORM := xilinx_u50_gen3x16_xdma_5_202210_1
+PLATFORM := xilinx_u55c_gen3x16_xdma_3_202210_1
