@@ -22,5 +22,9 @@
     "KV260": {
         "url": "https://www.xilinx.com/bin/public/openDownload?filename=pynqhelloworld.resizer.kv260.hwh",
         "md5sum": "e4036cc2b69e3bc043b14325cc901ac0"
+    },
+    "KR260": {
+        "url": "https://www.xilinx.com/bin/public/openDownload?filename=pynqhelloworld.resizer.kv260.hwh",
+        "md5sum": "e4036cc2b69e3bc043b14325cc901ac0"
     }
 }

@@ -32,62 +32,23 @@ __copyright__ = "Copyright 2020, Xilinx"
 __email__ = "pynq_support@xilinx.com"
 
 
+from pynqutils.setup_utils import build_py, find_version, extend_package, get_platform
 from setuptools import setup, find_packages
 import os
-import platform
-import re
-from pynq.utils import build_py
 
-
-# global variables
 module_name = "pynq_helloworld"
+
 data_files = []
-current_platform = ""
+extend_package(path=os.path.join(module_name, "notebooks"), data_files=data_files)
+extend_package(path=os.path.join(module_name, "tests"), data_files=data_files)
 
-
-# parse version number
-def find_version(file_path):
-    with open(file_path, 'r') as fp:
-        version_file = fp.read()
-        version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]",
-                                  version_file, re.M)
-    if version_match:
-        return version_match.group(1)
-    raise NameError("Version string must be defined in {}.".format(file_path))
-
-
-# extend package
-def extend_package(path):
-    if os.path.isdir(path):
-        data_files.extend(
-            [os.path.join("..", root, f)
-             for root, _, files in os.walk(path) for f in files]
-        )
-    elif os.path.isfile(path):
-        data_files.append(os.path.join("..", path))
-
-
-# get current platform: either edge or pcie
-def get_platform():
-    cpu = platform.processor()
-    if cpu in ['armv7l', 'aarch64']:
-        return "edge"
-    elif cpu in ['x86_64']:
-        return "pcie"
-    else:
-        raise OSError("Platform is not supported.")
-
-
-pkg_version = find_version('{}/__init__.py'.format(module_name))
 with open("README.md", encoding='utf-8') as fh:
     readme_lines = fh.readlines()[2:47]
 long_description = (''.join(readme_lines))
-extend_package(os.path.join(module_name, "notebooks"))
-
 
 setup(
     name=module_name,
-    version=pkg_version,
+    version=find_version('{}/__init__.py'.format(module_name)),
     description="PYNQ example design supporting edge and PCIE boards",
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -101,7 +62,7 @@ setup(
     },
     python_requires=">=3.6.0",
     install_requires=[
-        "pynq",
+        "pynqutils",
         "matplotlib",
         "ipython"
     ],
