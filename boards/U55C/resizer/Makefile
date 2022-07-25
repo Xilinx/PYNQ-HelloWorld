@@ -23,7 +23,7 @@ binary_container_1/resize_accel.xo:
 	@mkdir -p $(@D)
 	-@$(RM) $@
 	cd $(XO_BUILD_PATH) && make _x_temp.hw.$(PLATFORM)/resize_accel.xo TARGET=$(TARGET) DEVICE=$(VITIS_PLATFORM)
-	cp -rf $(XO_BUILD_PATH)/*/resize_accel.xo $@
+	cp -rf $(XO_BUILD_PATH)/_x_temp.hw.${PLATFORM}/resize_accel.xo $@
 
 binary_container_1/resizer.xclbin: $(kernel_xo)
 	v++ $(VPP_OPTS) -l --temp_dir binary_container_1 --log_dir binary_container_1/logs --remote_ip_cache binary_container_1/ip_cache -o "$@" $(+)
