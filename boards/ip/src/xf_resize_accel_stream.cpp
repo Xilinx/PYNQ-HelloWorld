@@ -18,7 +18,7 @@
 #define INTERPOLATION XF_INTERPOLATION_BILINEAR
 #define MAXDOWNSCALE 9
 
-typedef xf::cv::ap_axiu<DATA_WIDTH,1,1,1> interface_t;
+typedef ap_axiu<DATA_WIDTH,1,1,1> interface_t;
 typedef hls::stream<interface_t> stream_t;
 
 
